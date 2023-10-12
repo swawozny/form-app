@@ -1,4 +1,4 @@
-import React, {Fragment} from "react";
+import React from "react";
 import {Button, DatePicker, Form, Select} from "antd";
 
 import TextInput from "../components/TextInput";
@@ -29,36 +29,34 @@ const MainForm = () => {
     ));
 
     return (
-        <Fragment>
-            <Form form={form}>
-                <Form.Item
-                    name="continent"
-                    label="Kontynent"
+        <Form form={form}>
+            <Form.Item
+                name="continent"
+                label="Kontynent"
+            >
+                <Select placeholder="Wybierz kontynent">
+                    {selectOptions}
+                </Select>
+            </Form.Item>
+            {inputComponents}
+            <Form.Item
+                name="birthday"
+                label="Data urodzenia"
+            >
+                <DatePicker
+                    style={{width: "100%"}}
+                    placeholder="Wybierz datę urodzenia"
+                />
+            </Form.Item>
+            <Form.Item>
+                <Button
+                    type="primary"
+                    htmlType="submit"
                 >
-                    <Select placeholder="Wybierz kontynent">
-                        {selectOptions}
-                    </Select>
-                </Form.Item>
-                {inputComponents}
-                <Form.Item
-                    name="birthday"
-                    label="Data urodzenia"
-                >
-                    <DatePicker
-                        style={{width: "100%"}}
-                        placeholder="Wybierz datę urodzenia"
-                    />
-                </Form.Item>
-                <Form.Item>
-                    <Button
-                        type="primary"
-                        htmlType="submit"
-                    >
-                        Wyślij
-                    </Button>
-                </Form.Item>
-            </Form>
-        </Fragment>
+                    Wyślij
+                </Button>
+            </Form.Item>
+        </Form>
     );
 };
 
