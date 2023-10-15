@@ -5,7 +5,6 @@ interface InputOptions {
     name: string;
     label: string;
     placeholder: string;
-    required?: boolean;
 }
 
 const TextInput: React.FC<InputOptions> = ({name, label, placeholder}) => {
