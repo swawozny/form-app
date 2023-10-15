@@ -1,15 +1,18 @@
 import React from "react";
 import {Form, Input} from "antd";
 
-import {InputOptions} from "../constants/textInputs";
+interface InputOptions {
+    name: string;
+    label: string;
+    placeholder: string;
+}
 
-const TextInput: React.FC<InputOptions> = ({name, label, placeholder, required}) => {
+const TextInput: React.FC<InputOptions> = ({name, label, placeholder}) => {
     return (
         <Form.Item
             name={name}
             key={name}
             label={label}
-            rules={[{required}]}
         >
             <Input placeholder={placeholder}/>
         </Form.Item>
