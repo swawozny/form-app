@@ -1,11 +1,13 @@
-import React from "react";
-import {Button, DatePicker, Form, Select} from "antd";
+import React, {useState} from "react";
+import {Button, ConfigProvider, DatePicker, Form, Select} from "antd";
 
 import TextInput from "../components/TextInput";
+import validate from "../validations/validate";
 import continents from "../constants/continents";
-import textInputs, {InputOptions} from "../constants/textInputs";
 
-interface FormValues {
+const DEFAULT_FONT_SIZE = 12;
+
+export interface FormValues {
     continent?: string;
     firstName: string;
     lastName?: string;
@@ -14,6 +16,8 @@ interface FormValues {
 
 const MainForm = () => {
     const [form] = Form.useForm<FormValues>();
+    const [buttonDisabled, setButtonDisabled] = useState(false);
+    const [bigFontSize, setBigFontSize] = useState(false);
 
     const selectOptions = continents.map(continent => (
         <Select.Option
@@ -24,12 +28,42 @@ const MainForm = () => {
         </Select.Option>)
     );
 
-    const inputComponents = textInputs.map((input: InputOptions) => (
-        <TextInput key={input.name} {...input}/>
-    ));
+    const setFieldError = (name: string, error: string | undefined) => form.setFields([{
+        name,
+        errors: error ? [error] : []
+    }]);
+
+    const onFinish = (values: FormValues) => {
+        setButtonDisabled(false);
+        setBigFontSize(false);
+
+        const validationResult = validate(values);
+
+        setFieldError("firstName", validationResult?.firstName);
+        setFieldError("continent", validationResult?.continent);
+
+        if (validationResult) {
+            if (validationResult.date) {
+                setButtonDisabled(true);
+            }
+            if (validationResult.oldAge) {
+                setBigFontSize(true);
+            }
+        } else {
+            alert("Sukces!");
+        }
+    };
+
+    const getFontSize = () => {
+        return {fontSize: bigFontSize ? 2 * DEFAULT_FONT_SIZE : DEFAULT_FONT_SIZE};
+    };
 
     return (
-        <Form form={form}>
+        <ConfigProvider theme={{token: getFontSize()}}>
+            <Form
+                form={form}
+                onFinish={onFinish}
+            >
             <Form.Item
                 name="continent"
                 label="Kontynent"
@@ -38,13 +72,23 @@ const MainForm = () => {
                     {selectOptions}
                 </Select>
             </Form.Item>
-            {inputComponents}
+                <TextInput
+                    name="firstName"
+                    label="Imie"
+                    placeholder="Podaj imię"
+                />
+                <TextInput
+                    name="lastName"
+                    label="Nazwisko"
+                    placeholder="Podaj nazwisko"
+                />
             <Form.Item
                 name="birthday"
                 label="Data urodzenia"
             >
                 <DatePicker
                     style={{width: "100%"}}
+                    format="YYYY/MM/DD"
                     placeholder="Wybierz datę urodzenia"
                 />
             </Form.Item>
@@ -52,12 +96,13 @@ const MainForm = () => {
                 <Button
                     type="primary"
                     htmlType="submit"
+                    disabled={buttonDisabled}
                 >
                     Wyślij
                 </Button>
             </Form.Item>
         </Form>
+        </ConfigProvider>
     );
 };
-
 export default MainForm;
