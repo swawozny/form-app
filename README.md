@@ -119,6 +119,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Sebastian Wąwoźny - sebastianwawozny@wp.pl
 
-Project Link: [https://github.com/swawozny/top-forum-frontend](https://github.com/swawozny/form-app)
+Project Link: [https://github.com/swawozny/form-app](https://github.com/swawozny/form-app)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
